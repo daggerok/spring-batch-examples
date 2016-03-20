@@ -45,7 +45,7 @@ public class Cfg {
 
     @Bean
     public Step taskletStep() {
-        return stepBuilderFactory.get("com.daggerok.spring.batch.cfg.Cfg.step")
+        return stepBuilderFactory.get("com.daggerok.spring.batch.cfg.Cfg.taskletStep")
                 .tasklet((contribution, chunkContext) -> {
                     log.info("\ncontrib: {}\n, ctx: {}\nrun tasklet first", contribution, chunkContext);
                     return null;
@@ -55,7 +55,7 @@ public class Cfg {
 
     @Bean
     public Step processorStep() {
-        return stepBuilderFactory.get("com.daggerok.spring.batch.cfg.Cfg.step")
+        return stepBuilderFactory.get("com.daggerok.spring.batch.cfg.Cfg.processorStep")
                 .<Data, Data>chunk(2)
                 .reader(dataReader())
                 .processor(dataProcessor())
@@ -69,12 +69,6 @@ public class Cfg {
             @Override
             public void beforeJob(JobExecution jobExecution) {
                 log.info("\nlistener says before job");
-            }
-
-            @Override
-            public void afterJob(JobExecution jobExecution) {
-                log.info("\nlistener says after job");
-                super.afterJob(jobExecution);
             }
         };
     }
