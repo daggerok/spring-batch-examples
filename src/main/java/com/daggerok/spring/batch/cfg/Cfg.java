@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @Configuration
+@EnableScheduling
 @EnableBatchProcessing
 @ComponentScan(basePackageClasses = SpringBootBatchApplication.class)
 public class Cfg {
