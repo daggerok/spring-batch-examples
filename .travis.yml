@@ -1,6 +1,8 @@
 language: java
 jdk: openjdk8
-script: gradle clean build bootRun
+install: true
+before_script: ./gradlew clean
+script: ./gradlew build bootRun
 cache:
   directories:
     - ~/.gradle
