@@ -1,8 +1,22 @@
 # spring-batch-examples [![CI](https://github.com/daggerok/spring-batch-examples/actions/workflows/ci.yaml/badge.svg)](https://github.com/daggerok/spring-batch-examples/actions/workflows/ci.yaml)
 
+## TODO:
+- [Spring Tips: Spring Batch: file to pojo to jdbc import](https://www.youtube.com/watch?v=x4nBNLoizOc)
+- [High Performance Batch Processing](https://www.youtube.com/watch?v=J6IPlfm7N6w)
+- [Batch Processing in 2019](https://www.youtube.com/watch?v=bhFBtNiZYYY)
+- [Cloud Native Batch Processing](https://www.youtube.com/watch?v=1NZVwv1cmMc)
+- [Batching for the Modern Enterprise](https://www.youtube.com/watch?v=dIx81HYdpq4)
+
 ## spring-batch-example
 ```bash
 cd spring-batch-example ; ./gradlew clean bootRun
+```
+
+## spring-batch-job-scheduling
+```bash
+mvn -f spring-batch-job-scheduling spring-boot:start
+sleep 10s
+mvn -f spring-batch-job-scheduling spring-boot:stop
 ```
 
 ## spring-batch-pipeline-chain
@@ -39,6 +53,11 @@ mvn spring-boot:stop -f spring-batch-retry/apps/user-service
 mvn spring-boot:stop -f spring-batch-retry/apps/payment-service
 
 cat ./spring-batch-retry/apps/app/target/payments-report.csv
+```
+
+## txt-to-csv-converter
+```bash
+cd txt-to-csv-converter ; ./mvnw clean compile spring-boot:run
 ```
 
 ## rtfm
