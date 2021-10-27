@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V202110261822-1" author="Maksim Kostromin">
+        <comment>Insert 1st user deposit payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="10.00" />
+            <column name="created_at" value="2021-01-01 01:01:01.111" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-2" author="Maksim Kostromin">
+        <comment>Insert 1st user 1st withdrawal payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="1.00" />
+            <column name="created_at" value="2021-02-02 02:02:02.222" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-3" author="Maksim Kostromin">
+        <comment>Insert 1st user 2dn withdrawal payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="2.00" />
+            <column name="created_at" value="2021-03-03 03:03:03.333" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-4" author="Maksim Kostromin">
+        <comment>Insert more 1st user withdrawal payments</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="3.00" />
+            <column name="created_at" value="2021-04-04 04:04:04.444" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="4.00" />
+            <column name="created_at" value="2021-05-05 05:05:05.555" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-5" author="Maksim Kostromin">
+        <comment>Insert 2nd user deposit</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="10.00" />
+            <column name="created_at" value="2021-06-06 06:06:06.666" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-6" author="Maksim Kostromin">
+        <comment>Insert 2nd user withdrawals</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="1.00" />
+            <column name="created_at" value="2021-07-07 07:07:07.777" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="2.00" />
+            <column name="created_at" value="2021-08-08 08:08:08.888" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="3.00" />
+            <column name="created_at" value="2021-09-09 09:09:09.999" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

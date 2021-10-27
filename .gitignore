@@ -1,9 +1,42 @@
-.gradle/
-build/
-/out/
-.DS_Store
-.idea/
+### IntelliJ IDEA ###
+.idea
+!/.idea/workspace.xml
+*.iws
 *.iml
 *.ipr
-*.iws
 *.log*
+.gradle/
+target/
+build/
+/out/
+!**/src/**/out/**
+.DS_Store
+
+#### Node JS ###
+#node_modules/
+#.cache/
+#dist/
+#
+#### STS ###
+#.apt_generated
+#.classpath
+#.factorypath
+#.project
+#.settings
+#.springBeans
+#.sts4-cache
+#
+#### NetBeans ###
+#/nbproject/private/
+#/nbbuild/
+#/dist/
+#/nbdist/
+#/.nb-gradle/
+#
+#### VS Code ###
+#.vscode/
+#*.suo
+#*.ntvs*
+#*.njsproj
+#*.sln
+#*.sw?
