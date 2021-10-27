@@ -35,6 +35,32 @@ jobs:
       with:
         java-version: ${{ env.JAVA_VERSION }}
     - run: cd $GITHUB_WORKSPACE/spring-batch-example ; ./gradlew clean build bootRun
+  spring-batch-job-scheduling:
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      id: ci
+      with:
+        path: |
+          ~/.npm
+          ~/.node
+          ~/.local
+          ~/.gradle
+          ~/.docker
+          ~/.m2/repository
+          !~/.m2/repository/com/gituhb/daggerok
+        key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+    - uses: actions/setup-node@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+    - run: |
+        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw -q package
+        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:run &
+        sleep 25s
   spring-batch-pipeline-chain:
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest

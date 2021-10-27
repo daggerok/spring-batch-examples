@@ -1,4 +1,4 @@
-# Spring Batch pipeline chain processing
+# Spring Batch pipeline chain processing (WIP)
 
 ```bash
 cd spring-batch-pipeline-chain ; ./mvnw -f docker -P down ; ./mvnw -f docker -P up
