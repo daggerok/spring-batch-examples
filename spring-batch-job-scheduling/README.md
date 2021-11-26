@@ -1,7 +1,9 @@
 # Getting Started
 
 ```bash
-mvn -f spring-batch-job-scheduling spring-boot:run
+mvn spring-boot:start
+sleep 10s
+mvn spring-boot:stop
 ```
 
 ## Reference

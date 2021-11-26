@@ -9,7 +9,7 @@
 
         <createTable tableName="payments">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+                <constraints primaryKey="true" primaryKeyName="payment_pk"/>
             </column>
             <column name="user_id" type="BIGINT" />
             <column name="type" type="VARCHAR(8)" />

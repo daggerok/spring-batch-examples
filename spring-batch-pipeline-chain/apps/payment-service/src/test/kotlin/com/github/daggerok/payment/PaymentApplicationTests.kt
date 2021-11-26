@@ -21,7 +21,7 @@ class PaymentApplicationTests(@Autowired val paymentsRepository: PaymentsReposit
             .onEach { logger.info { it } }
 
         // then
-        assertThat(payments).hasSize(9)
+        assertThat(payments).hasSizeGreaterThanOrEqualTo(9)
     }
 
     @Test
@@ -32,7 +32,7 @@ class PaymentApplicationTests(@Autowired val paymentsRepository: PaymentsReposit
             .onEach { logger.info { it } }
 
         // then
-        assertThat(payments).hasSize(5)
+        assertThat(payments).hasSizeGreaterThanOrEqualTo(5)
     }
 
     @Test
@@ -43,7 +43,7 @@ class PaymentApplicationTests(@Autowired val paymentsRepository: PaymentsReposit
             .onEach { logger.info { it } }
 
         // then
-        assertThat(payments).hasSize(1)
+        assertThat(payments).hasSizeGreaterThanOrEqualTo(1)
     }
 
     @Test
@@ -54,7 +54,7 @@ class PaymentApplicationTests(@Autowired val paymentsRepository: PaymentsReposit
             .onEach { logger.info { it } }
 
         // then
-        assertThat(payments).hasSize(4)
+        assertThat(payments).hasSizeGreaterThanOrEqualTo(4)
     }
 
     companion object : KLogging()

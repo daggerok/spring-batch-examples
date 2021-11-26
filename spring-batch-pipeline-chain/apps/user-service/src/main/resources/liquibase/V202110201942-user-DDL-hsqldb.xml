@@ -9,11 +9,11 @@
 
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+                <constraints primaryKey="true" primaryKeyName="users_pk"/>
             </column>
-            <column name="first_name" type="VARCHAR(255)" />
-            <column name="last_name" type="VARCHAR(255)" />
-            <column name="created_at" type="TIMESTAMP" defaultValue="now()" />
+            <column name="first_name" type="VARCHAR(125)"/>
+            <column name="last_name" type="VARCHAR(125)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValue="now()"/>
         </createTable>
     </changeSet>
 

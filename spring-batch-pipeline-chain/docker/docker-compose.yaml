@@ -2,20 +2,9 @@ version: '3.3'
 networks:
   localnet:
 services:
-  prometheus:
-    image: prom/prometheus:v2.7.2
-    container_name: 'prometheus'
-    ports: ['9090:9090']
-    networks: [localnet]
-    volumes:
-    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  pushgateway:
-    image: prom/pushgateway:v0.6.0
-    container_name: 'pushgateway'
-    ports: ['9091:9091']
-    networks: [localnet]
-  grafana:
-    image: grafana/grafana:6.0.2
-    container_name: 'grafana'
-    ports: ['3000:3000']
+  sftp: # docker run -p 0.0.0.0:21021:22 -dv /tmp:/home/sftp-user/uploads atmoz/sftp sftp-usern:sftp-password
+    image: atmoz/sftp # sed -n '/\[0\.0\.0\.0]:21021/!p' ~/.ssh/known_hosts > ~/.ssh/known_hosts
+    command: "sftp-user:sftp-password" # ${sftpConfig.user}:${sftpConfig.password}
+    volumes: ['./target:/home/sftp-user/uploads'] # ${sftpConfig.baseDir}
+    ports: ['21021:22']
     networks: [localnet]

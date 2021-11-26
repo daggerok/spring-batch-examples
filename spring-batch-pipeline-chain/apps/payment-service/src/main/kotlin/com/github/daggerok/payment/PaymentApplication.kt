@@ -3,14 +3,17 @@ package com.github.daggerok.payment
 import com.github.daggerok.payment.PaymentType.DEPOSIT
 import com.github.daggerok.payment.PaymentType.NONE
 import com.github.daggerok.payment.PaymentType.WITHDRAW
+import com.github.daggerok.payment.api.PaymentDTO
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
+import java.math.RoundingMode.HALF_UP
 import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.EnumType.STRING
 import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.AUTO
+import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
 import javax.persistence.Table
 import mu.KLogging
@@ -43,7 +46,7 @@ enum class PaymentType {
 data class Payment(
 
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = IDENTITY)
     val id: Long = -1,
 
     val userId: Long = -1,
@@ -75,21 +78,29 @@ fun PaymentsRepository.searchUserDeposits(userId: Long): List<Payment> =
 fun PaymentsRepository.searchUserWithdrawals(userId: Long): List<Payment> =
     findPaymentsByUserIdAndTypeOrderByCreatedAtDesc(userId = userId, type = WITHDRAW)
 
+fun Payment.toDTO(): PaymentDTO =
+    PaymentDTO(id, userId, type.name, amount.setScale(2, HALF_UP), createdAt)
+
+fun List<Payment>.toDTO(): List<PaymentDTO> =
+    map { it.toDTO() }
+
 @RestController
 class PaymentsResource(private val paymentsRepository: PaymentsRepository) {
 
     @GetMapping("/api/payments")
-    fun getPayments(): List<Payment> =
+    fun getPayments(): List<PaymentDTO> =
         paymentsRepository.findPaymentsByOrderByCreatedAtDesc()
+            .toDTO()
 
     @GetMapping("/api/payments/user/{userId}")
-    fun getUserPayments(@PathVariable("userId") userId: Long): List<Payment> =
+    fun getUserPayments(@PathVariable("userId") userId: Long): List<PaymentDTO> =
         paymentsRepository.findPaymentsByUserIdOrderByCreatedAtDesc(userId)
+            .toDTO()
 
     @ExceptionHandler
     fun handleExceptions(e: Throwable) = let {
-        logger.warn { "Payment service error: $e" }
-        val error = e.message ?: "Unknown error"
+        val error = e.message ?: "Unknown"
+        logger.warn(e) { "Payment service error: $error" }
         ResponseEntity.badRequest().body(mapOf("error" to error))
     }
 

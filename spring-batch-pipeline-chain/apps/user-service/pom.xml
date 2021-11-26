@@ -13,6 +13,12 @@
     <artifactId>user-service</artifactId>
     <dependencies>
         <dependency>
+            <groupId>com.github.daggerok.batch</groupId>
+            <artifactId>user-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!---->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -47,6 +53,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <jmxPort>9001</jmxPort>
+                </configuration>
             </plugin>
         </plugins>
     </build>

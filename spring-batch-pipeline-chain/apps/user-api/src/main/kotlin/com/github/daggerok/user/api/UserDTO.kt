@@ -1,0 +1,10 @@
+package com.github.daggerok.user.api
+
+import java.time.LocalDateTime
+
+data class UserDTO(
+    val id: Long = -1,
+    val firstName: String = "",
+    val lastName: String = "",
+    val createdAt: LocalDateTime? = null,
+)

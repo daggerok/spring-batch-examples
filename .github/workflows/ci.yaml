@@ -7,7 +7,6 @@ on:
         required: false
         default: ''
   pull_request:
-    branches: [ master ]
   push:
 env:
   JAVA_VERSION: 1.8
@@ -57,9 +56,11 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: ${{ env.JAVA_VERSION }}
+    - run: cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw clean install -q
     - run: |
-        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw -q package
-        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:run &
+        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:start
+        sleep 10s
+        cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:stop
         sleep 25s
   spring-batch-pipeline-chain:
     if: github.event.inputs.trigger == ''
@@ -83,12 +84,21 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: ${{ env.JAVA_VERSION }}
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; rm -rf ~/.m2/repository/com/github/daggerok/batch ; ./mvnw -B dependency:resolve dependency:resolve-plugins
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown ; ./mvnw -f docker -Pup
-    - run: sleep 10s
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw clean install
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f apps/app spring-boot:run
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown
+    - run: rm -rf ~/.m2/repository/com/github/daggerok/batch
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw clean install -q
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw test
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pup
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/app
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/user-service
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/payment-service
+    - run: sudo apt install -y httpie
+    - run: http --ignore-stdin post :8080/api/launch-payments-report ; http --ignore-stdin get :8080/api
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/app
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/user-service
+    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/payment-service
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown
+    - run: cat $GITHUB_WORKSPACE/spring-batch-pipeline-chain/apps/app/target/payments-report.csv
   dependency-updates:
     if: contains(github.event.inputs.trigger, 'M')
       || startsWith(github.event.inputs.trigger, 'm')
@@ -113,7 +123,7 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: ${{ env.JAVA_VERSION }}
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-plugin-updates
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-property-updates
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-parent-updates

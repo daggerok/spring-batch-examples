@@ -6,5 +6,6 @@
     <!-- Migrations -->
     <include file="liquibase/V202110181455-data-types-hsqldb.xml"/>
     <include file="liquibase/V202110181456-spring-batch-hsqldb.xml"/>
+    <include file="liquibase/V202111040054-payments-report-DDL-hsqldb.xml"/>
 
 </databaseChangeLog>
