@@ -10,16 +10,16 @@
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>app</artifactId>
+    <artifactId>spring-batch-pipeline-chain-app</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.github.daggerok.batch</groupId>
-            <artifactId>payment-client</artifactId>
+            <artifactId>spring-batch-pipeline-chain-payment-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.daggerok.batch</groupId>
-            <artifactId>user-client</artifactId>
+            <artifactId>spring-batch-pipeline-chain-user-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

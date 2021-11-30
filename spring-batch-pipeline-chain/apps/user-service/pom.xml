@@ -10,11 +10,11 @@
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>user-service</artifactId>
+    <artifactId>spring-batch-pipeline-chain-user-service</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.github.daggerok.batch</groupId>
-            <artifactId>user-api</artifactId>
+            <artifactId>spring-batch-pipeline-chain-user-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!---->

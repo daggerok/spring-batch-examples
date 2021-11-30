@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>docker</artifactId>
+    <artifactId>spring-batch-pipeline-chain-docker</artifactId>
     <description>Docker compose environment for local development</description>
     <properties>
         <docker-compose-project-name>dev</docker-compose-project-name>

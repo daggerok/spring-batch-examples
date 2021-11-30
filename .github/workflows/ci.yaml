@@ -99,6 +99,43 @@ jobs:
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/payment-service
     #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown
     - run: cat $GITHUB_WORKSPACE/spring-batch-pipeline-chain/apps/app/target/payments-report.csv
+  spring-batch-retry:
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      id: ci
+      with:
+        path: |
+          ~/.npm
+          ~/.node
+          ~/.local
+          ~/.gradle
+          ~/.docker
+          ~/.m2/repository
+          !~/.m2/repository/com/gituhb/daggerok
+        key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+    - uses: actions/setup-node@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+    - run: rm -rf ~/.m2/repository/com/github/daggerok
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw clean install -q
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw test
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pup
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/app
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/user-service
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/payment-service
+    - run: sudo apt install -y httpie
+    - run: http --ignore-stdin post :8080/api/launch-payments-report ; sleep 30s ; http --ignore-stdin get :8080/api
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/app
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/user-service
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/payment-service
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pdown
+    - run: cat $GITHUB_WORKSPACE/spring-batch-retry/apps/app/target/payments-report.csv
   dependency-updates:
     if: contains(github.event.inputs.trigger, 'M')
       || startsWith(github.event.inputs.trigger, 'm')
@@ -123,7 +160,12 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: ${{ env.JAVA_VERSION }}
+    - run: cd $GITHUB_WORKSPACE/spring-batch-example ; ./gradlew dependencyUpdates
     #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-plugin-updates
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-property-updates
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-parent-updates
+    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw versions:display-plugin-updates
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw versions:display-property-updates
+    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw versions:display-parent-updates
