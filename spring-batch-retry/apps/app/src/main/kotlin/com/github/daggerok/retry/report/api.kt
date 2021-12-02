@@ -7,3 +7,11 @@ data class ReportWrapper<T>(
     val chunks: List<T>,
     val at: LocalDateTime = LocalDateTime.now(),
 )
+
+data class LaunchDocument(
+    val jobId: Long,
+)
+
+data class ErrorDocument(
+    val message: String? = "Unknown error",
+)

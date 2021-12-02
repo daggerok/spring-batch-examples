@@ -5,6 +5,18 @@ Content-Type: application/json
 POST http://localhost:8080/api/launch-payments-report
 Content-Type: application/json
 
+> {%
+client.test("Should fetch jobId", function() {
+    client.global.clear("jobId");
+    var jobId = response.body["jobId"];
+    client.global.set("jobId", jobId)
+});
+%}
+
+###
+GET http://localhost:8080/api/summary/{{jobId}}
+Content-Type: application/json
+
 ###
 GET http://localhost:8001/api/users
 Content-Type: application/json
