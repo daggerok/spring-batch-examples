@@ -23,6 +23,9 @@ import org.springframework.batch.item.support.CompositeItemProcessor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.retry.backoff.NoBackOffPolicy
+import org.springframework.retry.policy.ExceptionClassifierRetryPolicy
+import org.springframework.retry.policy.MaxAttemptsRetryPolicy
 
 @Configuration
 @EnableBatchProcessing
@@ -61,6 +64,7 @@ class PaymentsReportJobConfig(
             .writer(enrichWriter)
             .faultTolerant()
             .retryLimit(retryProps.maxAttempts)
+            .retryPolicy(MaxAttemptsRetryPolicy(retryProps.maxAttempts))
             .build()
 
     @Bean
@@ -108,6 +112,7 @@ class PaymentsReportJobConfig(
             .writer(writer)
             .faultTolerant()
             .retryLimit(retryProps.maxAttempts)
+            .retryPolicy(MaxAttemptsRetryPolicy(retryProps.maxAttempts))
             .build()
 
     private companion object : KLogging()

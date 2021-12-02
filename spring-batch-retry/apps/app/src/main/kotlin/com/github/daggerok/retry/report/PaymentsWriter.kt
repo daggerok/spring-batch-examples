@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component
 @JobScope
 @Component
 class PaymentsWriter(
+    @Value("#{jobParameters}") private val jobParameters: Map<String, Any>,
+    @Value("#{jobParameters.dateTime}") private val dateTime: String,
     @Value("#{jobExecution.jobId}") private val jobId: Long,
     private val paymentReportCsvConverter: PaymentReportCsvConverter,
 ) : ItemWriter<ReportWrapper<PaymentsReport>> {
