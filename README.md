@@ -60,6 +60,13 @@ cat ./spring-batch-retry/apps/app/target/payments-report.csv
 cd txt-to-csv-converter ; ./mvnw clean compile spring-boot:run
 ```
 
+## read-process-write-with-tasklets
+```bash
+cd read-process-write-with-tasklets ; ./mvnw spring-boot:start
+http post :8080/api/launch-my-job
+cd read-process-write-with-tasklets ; ./mvnw spring-boot:stop
+```
+
 ## rtfm
 * [Spring Batch Retry](https://sysout.ru/otkazoustojchivost-v-spring-batch-retry-i-skip/)
 * [Retry rollbackOnly Transactions 1](https://stackoverflow.com/questions/19349898/unexpectedrollbackexception-transaction-rolled-back-because-it-has-been-marked)

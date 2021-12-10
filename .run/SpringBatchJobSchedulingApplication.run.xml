@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SpringBatchJobSchedulingApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="spring-batch-job-scheduling" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="dagggerok.springbatchjobscheduling.SpringBatchJobSchedulingApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

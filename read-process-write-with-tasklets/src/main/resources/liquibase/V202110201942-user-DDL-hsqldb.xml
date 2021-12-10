@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V202110201942" author="Maksim Kostromin">
+        <comment>User schema DDL statements</comment>
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="users_pk"/>
+            </column>
+            <column name="first_name" type="VARCHAR(125)"/>
+            <column name="last_name" type="VARCHAR(125)"/>
+            <column name="created_at" type="TIMESTAMP" defaultValue="now()"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

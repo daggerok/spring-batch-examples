@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <include file="liquibase/V202110181455-data-types-hsqldb.xml"/>
+    <include file="liquibase/V202110181456-spring-batch-hsqldb.xml"/>
+    <include file="liquibase/V202110201942-user-DDL-hsqldb.xml"/>
+    <include file="liquibase/V202110261541-user-DML-hsqldb.xml"/>
+    <include file="liquibase/V202110261821-payment-DDL-hsqldb.xml"/>
+    <include file="liquibase/V202110261822-payment-DML-hsqldb.xml"/>
+</databaseChangeLog>

@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ReadProcessWriteApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="read-process-write" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="dagggerok.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="dagggerok.Application" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

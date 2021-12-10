@@ -1,0 +1,12 @@
+GET http://localhost:8080/api/users
+Accept: application/json
+
+###
+GET http://localhost:8080/api/payments
+Accept: application/json
+
+###
+POST http://localhost:8080/api/launch-my-job
+Accept: application/json
+
+###

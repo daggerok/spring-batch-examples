@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RetryUserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="spring-batch-retry-user-service" />
+  <configuration default="false" name="UserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="spring-batch-pipeline-chain-user-service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.github.daggerok.user.UserApplication" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
