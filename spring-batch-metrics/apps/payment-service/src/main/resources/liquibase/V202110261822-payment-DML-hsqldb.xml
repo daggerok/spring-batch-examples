@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V202110261822-1" author="Maksim Kostromin">
+        <comment>Insert 1st user deposit payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="10.00" />
+            <column name="created_at" value="2021-01-01 01:01:01.111" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-2" author="Maksim Kostromin">
+        <comment>Insert 1st user 1st withdrawal payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="1.00" />
+            <column name="created_at" value="2021-02-02 02:02:02.222" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-3" author="Maksim Kostromin">
+        <comment>Insert 1st user 2dn withdrawal payment</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="2.00" />
+            <column name="created_at" value="2021-03-03 03:03:03.333" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-4" author="Maksim Kostromin">
+        <comment>Insert more 1st user withdrawal payments</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="3.00" />
+            <column name="created_at" value="2021-04-04 04:04:04.444" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="4.00" />
+            <column name="created_at" value="2021-05-05 05:05:05.555" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-5" author="Maksim Kostromin">
+        <comment>Insert 2nd user deposit</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="10.00" />
+            <column name="created_at" value="2021-06-06 06:06:06.666" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-6" author="Maksim Kostromin">
+        <comment>Insert 2nd user withdrawals</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="1.00" />
+            <column name="created_at" value="2021-07-07 07:07:07.777" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="2.00" />
+            <column name="created_at" value="2021-08-08 08:08:08.888" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="3.00" />
+            <column name="created_at" value="2021-09-09 09:09:09.999" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-7" author="Maksim Kostromin">
+        <comment>Insert more test data for 2nd user...</comment>
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="300.00" />
+            <column name="created_at" value="2021-10-10 10:00:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="1.00" />
+            <column name="created_at" value="2021-10-10 10:01:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="2.00" />
+            <column name="created_at" value="2021-10-10 10:02:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="3.00" />
+            <column name="created_at" value="2021-10-10 10:03:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="4.00" />
+            <column name="created_at" value="2021-10-10 10:04:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="5.00" />
+            <column name="created_at" value="2021-10-10 10:05:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="6.00" />
+            <column name="created_at" value="2021-10-10 10:06:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="7.00" />
+            <column name="created_at" value="2021-10-10 10:07:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="8.00" />
+            <column name="created_at" value="2021-10-10 10:08:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="9.00" />
+            <column name="created_at" value="2021-10-10 10:09:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="10.00" />
+            <column name="created_at" value="2021-10-10 10:10:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="11.00" />
+            <column name="created_at" value="2021-10-10 10:11:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="12.00" />
+            <column name="created_at" value="2021-10-10 10:12:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="13.00" />
+            <column name="created_at" value="2021-10-10 10:13:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="14.00" />
+            <column name="created_at" value="2021-10-10 10:14:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="15.00" />
+            <column name="created_at" value="2021-10-10 10:15:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="16.00" />
+            <column name="created_at" value="2021-10-10 10:16:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="17.00" />
+            <column name="created_at" value="2021-10-10 10:17:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="18.00" />
+            <column name="created_at" value="2021-10-10 10:18:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="19.00" />
+            <column name="created_at" value="2021-10-10 10:18:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="20.00" />
+            <column name="created_at" value="2021-10-10 10:20:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="21.00" />
+            <column name="created_at" value="2021-10-10 10:21:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="22.00" />
+            <column name="created_at" value="2021-10-10 10:22:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="23.00" />
+            <column name="created_at" value="2021-10-10 10:23:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="24.00" />
+            <column name="created_at" value="2021-10-10 10:24:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="25.00" />
+            <column name="created_at" value="2021-10-10 10:25:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="25.00" />
+            <column name="created_at" value="2021-10-10 10:26:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="25.00" />
+            <column name="created_at" value="2021-10-10 10:27:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="1" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="25.00" />
+            <column name="created_at" value="2021-10-10 10:28:00.000" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="V202110261822-8" author="Maksim Kostromin">
+        <comment>Insert more test data for 1st user...</comment>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="DEPOSIT" />
+            <column name="amount" value="1234.56" />
+            <column name="created_at" value="2021-11-11 00:00:00.000" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="111.11" />
+            <column name="created_at" value="2021-11-11 11:11:11.111" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="222.22" />
+            <column name="created_at" value="2021-11-11 11:22:22.222" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="333.33" />
+            <column name="created_at" value="2021-11-11 11:33:33.333" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="444.44" />
+            <column name="created_at" value="2021-11-11 11:44:44.444" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="5.55" />
+            <column name="created_at" value="2021-11-11 11:55:55.555" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="6.66" />
+            <column name="created_at" value="2021-11-11 11:55:56.666" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="7.77" />
+            <column name="created_at" value="2021-11-11 11:55:57.777" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="8.88" />
+            <column name="created_at" value="2021-11-11 11:55:58.888" />
+        </insert>
+
+        <insert tableName="payments">
+            <column name="user_id" value="0" />
+            <column name="type" value="WITHDRAW" />
+            <column name="amount" value="9.99" />
+            <column name="created_at" value="2021-11-11 11:55:59.999" />
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

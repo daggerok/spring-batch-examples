@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!-- HSQLDB data types -->
+    <property name="timestamp.type" dbms="hsqldb" value="timestamp"/>
+    <property name="datetime.type" dbms="hsqldb" value="datetime"/>
+    <property name="date.type" dbms="hsqldb" value="date"/>
+    <property name="decimal.type" dbms="hsqldb" value="DECIMAL(19,8)"/>
+    <property name="double.type" dbms="hsqldb" value="double"/>
+    <property name="boolean.type" dbms="hsqldb" value="BIT"/>
+    <property name="blob.type" dbms="hsqldb" value="BLOB"/>
+    <property name="now" dbms="hsqldb" value="CURRENT_TIMESTAMP"/>
+
+</databaseChangeLog>

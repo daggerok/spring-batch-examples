@@ -19,7 +19,7 @@ sleep 10s
 mvn -f spring-batch-job-scheduling spring-boot:stop
 ```
 
-## spring-batch-pipeline-chain
+## spring-batch-metrics
 ```bash
 rm -rf ~/.m2/repository/com/github/daggerok
 mvn clean package install -f spring-batch-pipeline-chain
@@ -65,6 +65,24 @@ cd txt-to-csv-converter ; ./mvnw clean compile spring-boot:run
 cd read-process-write-with-tasklets ; ./mvnw spring-boot:start
 http post :8080/api/launch-my-job
 cd read-process-write-with-tasklets ; ./mvnw spring-boot:stop
+```
+
+## spring-batch-metrics
+```bash
+rm -rf ~/.m2/repository/com/github/daggerok
+mvn clean package install -f spring-batch-metrics
+
+mvn spring-boot:start -f spring-batch-metrics/apps/user-service
+mvn spring-boot:start -f spring-batch-metrics/apps/payment-service
+mvn spring-boot:start -f spring-batch-metrics/apps/app
+
+http post :8080/api/launch-payments-report ; http get :8080/api
+
+mvn spring-boot:stop -f spring-batch-metrics/apps/app
+mvn spring-boot:stop -f spring-batch-metrics/apps/user-service
+mvn spring-boot:stop -f spring-batch-metrics/apps/payment-service
+
+cat ./spring-batch-metrics/apps/app/target/payments-report.csv
 ```
 
 ## rtfm
