@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="V202111040054" author="Maksim Kostromin">
+        <comment>Payments Report schema DDL statements</comment>
+
+        <createTable tableName="payments_report">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="payments_report_pk"/>
+            </column>
+
+            <column name="job_id" type="BIGINT"/>
+
+            <column name="payment_id" type="BIGINT"/>
+            <column name="payment_type" type="VARCHAR(8)"/>
+            <column name="payment_amount" type="DECIMAL"/>
+            <column name="payment_date_time" type="TIMESTAMP"/>
+
+            <column name="user_id" type="BIGINT"/>
+            <column name="user_full_name" type="VARCHAR(255)"/>
+            <column name="user_registration_date" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
