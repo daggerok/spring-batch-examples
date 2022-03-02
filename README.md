@@ -77,6 +77,7 @@ mvn spring-boot:start -f spring-batch-metrics/apps/payment-service
 mvn spring-boot:start -f spring-batch-metrics/apps/app
 
 http post :8080/api/launch-payments-report ; http get :8080/api
+http get  :8080/actuator/metrics/app.EnrichUsersDataProcessor
 
 mvn spring-boot:stop -f spring-batch-metrics/apps/app
 mvn spring-boot:stop -f spring-batch-metrics/apps/user-service

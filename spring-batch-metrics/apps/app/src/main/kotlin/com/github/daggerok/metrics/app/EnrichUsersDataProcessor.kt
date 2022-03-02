@@ -1,6 +1,7 @@
 package com.github.daggerok.metrics.app
 
 import com.github.daggerok.user.client.UserClient
+import io.micrometer.core.annotation.Timed
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemProcessor
 import org.springframework.beans.factory.annotation.Value
@@ -13,6 +14,7 @@ class EnrichUsersDataProcessor(
     private val userClient: UserClient,
 ) : ItemProcessor<PaymentsReport, PaymentsReport> {
 
+    @Timed("app.EnrichUsersDataProcessor")
     override fun process(item: PaymentsReport): PaymentsReport? =
         userClient.getUser(item.userId).run {
             // item.apply {
