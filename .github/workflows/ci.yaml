@@ -8,16 +8,24 @@ on:
         default: ''
   #pull_request: [ master ]
   push:
-env:
-  JAVA_VERSION: 1.8
 jobs:
   spring-batch-example:
+    name: java-${{ matrix.java }} spring-batch-example
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [8, 11]
+        #java: [8, 11, 17, 18]
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: actions/setup-java@v3
+      with:
+        # 'temurin' 'zulu' 'adopt' 'adopt-hotspot' 'adopt-openj9' 'liberica' 'microsoft'
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+    - uses: actions/cache@v3
       id: ci
       with:
         path: |
@@ -30,17 +38,22 @@ jobs:
           !~/.m2/repository/com/gituhb/daggerok
         key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
     - uses: actions/setup-node@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
     - run: cd $GITHUB_WORKSPACE/spring-batch-example ; ./gradlew clean build bootRun
   spring-batch-job-scheduling:
+    name: java-${{ matrix.java }} spring-batch-job-scheduling
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+    - uses: actions/cache@v3
       id: ci
       with:
         path: |
@@ -53,9 +66,6 @@ jobs:
           !~/.m2/repository/com/gituhb/daggerok
         key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
     - uses: actions/setup-node@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
     - run: cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw clean install -q
     - run: |
         cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:start
@@ -63,86 +73,20 @@ jobs:
         cd $GITHUB_WORKSPACE/spring-batch-job-scheduling ; ./mvnw spring-boot:stop
         sleep 25s
   spring-batch-pipeline-chain:
+    name: java-${{ matrix.java }} spring-batch-pipeline-chain
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      id: ci
-      with:
-        path: |
-          ~/.npm
-          ~/.node
-          ~/.local
-          ~/.gradle
-          ~/.docker
-          ~/.m2/repository
-          !~/.m2/repository/com/gituhb/daggerok
-        key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
-    - uses: actions/setup-node@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-    - run: rm -rf ~/.m2/repository/com/github/daggerok/batch
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw clean install -q
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw test
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pup
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/app
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/user-service
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/payment-service
-    - run: sudo apt install -y httpie
-    - run: http --ignore-stdin post :8080/api/launch-payments-report ; http --ignore-stdin get :8080/api
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/app
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/user-service
-    - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/payment-service
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown
-    - run: cat $GITHUB_WORKSPACE/spring-batch-pipeline-chain/apps/app/target/payments-report.csv
-  spring-batch-retry:
-    if: github.event.inputs.trigger == ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      id: ci
-      with:
-        path: |
-          ~/.npm
-          ~/.node
-          ~/.local
-          ~/.gradle
-          ~/.docker
-          ~/.m2/repository
-          !~/.m2/repository/com/gituhb/daggerok
-        key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
-    - uses: actions/setup-node@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-    - run: rm -rf ~/.m2/repository/com/github/daggerok
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -B dependency:resolve dependency:resolve-plugins
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw clean install -q
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw test
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pup
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/app
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/user-service
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/payment-service
-    - run: sudo apt install -y httpie
-    - run: http --ignore-stdin post :8080/api/launch-payments-report ; sleep 30s ; http --ignore-stdin get :8080/api
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/app
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/user-service
-    - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/payment-service
-    #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pdown
-    - run: cat $GITHUB_WORKSPACE/spring-batch-retry/apps/app/target/payments-report.csv
-  txt-to-csv-converter:
-    if: github.event.inputs.trigger == ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
         id: ci
         with:
           path: |
@@ -155,18 +99,107 @@ jobs:
             !~/.m2/repository/com/gituhb/daggerok
           key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
       - uses: actions/setup-node@v2
-      - uses: actions/setup-java@v1
+      - run: rm -rf ~/.m2/repository/com/github/daggerok/batch
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw clean install -q
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw test
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pup
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/app
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:start -f apps/payment-service
+      - run: sudo apt install -y httpie
+      - run: http --ignore-stdin post :8080/api/launch-payments-report ; http --ignore-stdin get :8080/api
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/app
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw spring-boot:stop -f apps/payment-service
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -f docker -Pdown
+      - run: cat $GITHUB_WORKSPACE/spring-batch-pipeline-chain/apps/app/target/payments-report.csv
+  spring-batch-retry:
+    name: java-${{ matrix.java }} spring-batch-retry
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/com/gituhb/daggerok
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+      - uses: actions/setup-node@v2
+      - run: rm -rf ~/.m2/repository/com/github/daggerok
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -B dependency:resolve dependency:resolve-plugins
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw clean install -q
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw test
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pup
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/app
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:start -f apps/payment-service
+      - run: sudo apt install -y httpie
+      - run: http --ignore-stdin post :8080/api/launch-payments-report ; sleep 30s ; http --ignore-stdin get :8080/api
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/app
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw spring-boot:stop -f apps/payment-service
+      #- run: cd $GITHUB_WORKSPACE/spring-batch-retry ; ./mvnw -f docker -Pdown
+      - run: cat $GITHUB_WORKSPACE/spring-batch-retry/apps/app/target/payments-report.csv
+  txt-to-csv-converter:
+    name: java-${{ matrix.java }} txt-to-csv-converter
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/com/gituhb/daggerok
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+      - uses: actions/setup-node@v2
       - run: cd $GITHUB_WORKSPACE/txt-to-csv-converter ; ./mvnw -q
       - run: cd $GITHUB_WORKSPACE/txt-to-csv-converter ; ./mvnw spring-boot:run
   read-process-write-with-tasklets:
+    name: java-${{ matrix.java }} read-process-write-with-tasklets
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
         id: ci
         with:
           path: |
@@ -179,23 +212,27 @@ jobs:
             !~/.m2/repository/com/gituhb/daggerok
           key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
       - uses: actions/setup-node@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
       - run: cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw -q
       - run: sudo apt install -y httpie
       - run: |
           cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw spring-boot:start
           http --ignore-stdin post :8080/api/launch-my-job
       - run: cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw spring-boot:stop
-
   spring-batch-metrics:
+    name: java-${{ matrix.java }} spring-batch-metrics
     if: github.event.inputs.trigger == ''
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
         id: ci
         with:
           path: |
@@ -208,9 +245,6 @@ jobs:
             !~/.m2/repository/com/gituhb/daggerok
           key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
       - uses: actions/setup-node@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
       - run: rm -rf ~/.m2/repository/com/github/daggerok/batch
       #- run: cd $GITHUB_WORKSPACE/spring-batch-metrics ; ./mvnw -B dependency:resolve dependency:resolve-plugins
       - run: cd $GITHUB_WORKSPACE/spring-batch-metrics ; ./mvnw clean install -q
@@ -231,13 +265,19 @@ jobs:
   dependency-updates:
     if: contains(github.event.inputs.trigger, 'M')
       || startsWith(github.event.inputs.trigger, 'm')
+    name: java-${{ matrix.java }} dependency-updates
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
     steps:
-    - run: |
-        echo "Trigger: ${{ github.event.inputs.trigger }}"
     - uses: actions/checkout@v2
-    - uses: actions/cache@v2
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+    - uses: actions/cache@v3
       id: ci
       with:
         path: |
@@ -249,9 +289,6 @@ jobs:
           ~/.m2/repository
           !~/.m2/repository/com/gituhb/daggerok
         key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
-    - uses: actions/setup-java@v1
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
     - run: cd $GITHUB_WORKSPACE/spring-batch-example ; ./gradlew dependencyUpdates
     #- run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw -B dependency:resolve dependency:resolve-plugins
     - run: cd $GITHUB_WORKSPACE/spring-batch-pipeline-chain ; ./mvnw versions:display-plugin-updates
