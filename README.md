@@ -86,6 +86,27 @@ mvn spring-boot:stop -f spring-batch-metrics/apps/payment-service
 cat ./spring-batch-metrics/apps/app/target/payments-report.csv
 ```
 
+## run-steps-in-parallel-with-flow-split
+```bash
+rm -rf ~/.m2/repository/com/github/daggerok/batch/parallel
+mvn clean package install -f run-steps-in-parallel-with-flow-split
+
+mvn spring-boot:start -f run-steps-in-parallel-with-flow-split/apps/user-service
+mvn spring-boot:start -f run-steps-in-parallel-with-flow-split/apps/payment-service
+mvn spring-boot:start -f run-steps-in-parallel-with-flow-split/apps/app
+
+http post :8080/api/launch-payments-report ; http get :8080/api
+http get  :8080/actuator/metrics/app.loadAllPaymentsFlow
+http get  :8080/actuator/metrics/app.loadAllUsersFlow
+http get  :8080/actuator/metrics/app.enrichReportTaskletStep
+
+mvn spring-boot:stop -f run-steps-in-parallel-with-flow-split/apps/app
+mvn spring-boot:stop -f run-steps-in-parallel-with-flow-split/apps/user-service
+mvn spring-boot:stop -f run-steps-in-parallel-with-flow-split/apps/payment-service
+
+cat ./run-steps-in-parallel-with-flow-split/apps/app/target/payments-report.csv
+```
+
 ## rtfm
 * [Spring Batch Retry](https://sysout.ru/otkazoustojchivost-v-spring-batch-retry-i-skip/)
 * [Retry rollbackOnly Transactions 1](https://stackoverflow.com/questions/19349898/unexpectedrollbackexception-transaction-rolled-back-because-it-has-been-marked)

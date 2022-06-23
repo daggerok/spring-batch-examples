@@ -9,6 +9,48 @@ on:
   #pull_request: [ master ]
   push:
 jobs:
+  run-steps-in-parallel-with-flow-split:
+    name: java-${{ matrix.java }} run-steps-in-parallel-with-flow-split
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/com/gituhb/daggerok
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+      - uses: actions/setup-node@v2
+      - run: rm -rf ~/.m2/repository/com/github/daggerok/batch
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw clean install
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:start -f apps/app
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:start -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:start -f apps/payment-service
+      - run: sudo apt install -yqq httpie
+      - run: http --ignore-stdin post :8080/api/launch-payments-report
+      - run: http --ignore-stdin get  :8080/api
+      - run: http --ignore-stdin get  :8080/actuator/metrics/app.loadAllPaymentsFlow
+      - run: http --ignore-stdin get  :8080/actuator/metrics/app.loadAllUsersFlow
+      - run: http --ignore-stdin get  :8080/actuator/metrics/app.enrichReportTaskletStep
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:stop -f apps/app
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:stop -f apps/user-service
+      - run: cd $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split ; ./mvnw spring-boot:stop -f apps/payment-service
+      - run: cat $GITHUB_WORKSPACE/run-steps-in-parallel-with-flow-split/apps/app/target/payments-report.csv
   spring-batch-example:
     name: java-${{ matrix.java }} spring-batch-example
     if: github.event.inputs.trigger == ''
@@ -22,7 +64,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v3
       with:
-        # 'temurin' 'zulu' 'adopt' 'adopt-hotspot' 'adopt-openj9' 'liberica' 'microsoft'
         distribution: 'temurin'
         java-version: ${{ matrix.java }}
     - uses: actions/cache@v3
@@ -275,6 +316,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v3
       with:
+        # 'temurin' 'zulu' 'adopt' 'adopt-hotspot' 'adopt-openj9' 'liberica' 'microsoft'
         distribution: 'temurin'
         java-version: ${{ matrix.java }}
     - uses: actions/cache@v3
