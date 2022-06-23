@@ -5,13 +5,14 @@
 ```bash
 rm -rf ~/.m2/repository/com/github/daggerok/batch/parallel
 cd run-steps-in-parallel-with-flow-split
-./mvnw clean package install
+./mvnw clean package install -DskipTests
 
-mvn spring-boot:start -f apps/user-service
+./mvnw spring-boot:start -f apps/user-service
 ./mvnw spring-boot:start -f apps/payment-service
 ./mvnw spring-boot:start -f apps/app
 
-http post :8080/api/launch-payments-report ; http get :8080/api
+http post :8080/api/launch-payments-report
+http get :8080/api
 http get  :8080/actuator/metrics/app.loadAllPaymentsFlow
 http get  :8080/actuator/metrics/app.loadAllUsersFlow
 http get  :8080/actuator/metrics/app.enrichReportTaskletStep

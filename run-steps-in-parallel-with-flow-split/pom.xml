@@ -5,7 +5,10 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.0</version>
+        <!-- found a problem: with spring-boot version 2.7.0 behaviour is expected -->
+        <!-- <version>2.7.0</version> -->
+        <!-- with version 2.6.7 behaviour is incorrect -->
+        <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <packaging>pom</packaging>
