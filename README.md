@@ -108,6 +108,7 @@ cat ./run-steps-in-parallel-with-flow-split/apps/app/target/payments-report.csv
 ```
 
 ## rtfm
+* [Spring Batch testing](https://docs.spring.io/spring-batch/docs/current/reference/html/testing.html)
 * [Spring Batch Retry](https://sysout.ru/otkazoustojchivost-v-spring-batch-retry-i-skip/)
 * [Retry rollbackOnly Transactions 1](https://stackoverflow.com/questions/19349898/unexpectedrollbackexception-transaction-rolled-back-because-it-has-been-marked)
 * [Retry rollbackOnly Transactions 2](https://stackoverflow.com/questions/34902380/commit-failed-while-step-execution-data-was-already-updated)
