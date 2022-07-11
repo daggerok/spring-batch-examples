@@ -1,10 +1,12 @@
-package daggerok.springbatchunittests
+package daggerok.springbatchunittests.taskletstep
 
 import org.junit.jupiter.api.Test
+import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
+import org.springframework.batch.core.step.tasklet.TaskletStep
 import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.batch.test.JobLauncherTestUtils
 import org.springframework.batch.test.JobScopeTestExecutionListener
@@ -20,17 +22,17 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 @EnableBatchProcessing
 @SpringBootApplication
-class SpringBatchUnitTestsApplicationTestsApp {
+internal class SpringBatchUnitTestsApplicationTestsApp {
 
     @Bean
-    fun myJob(jobs: JobBuilderFactory, myTaskletStep: Step) =
-        jobs["myJob"]
+    fun springBatchUnitTestsApplicationTestsAppJob(jobs: JobBuilderFactory, myTaskletStep: Step): Job =
+        jobs["springBatchUnitTestsApplicationTestsAppJob"]
             .start(myTaskletStep)
             .build()
 
     @Bean
-    fun myTaskletStep(steps: StepBuilderFactory) =
-        steps["myTaskletStep"]
+    fun springBatchUnitTestsApplicationTestsAppTaskletStep(steps: StepBuilderFactory): TaskletStep =
+        steps["springBatchUnitTestsApplicationTestsAppTaskletStep"]
             .tasklet { _, _ ->
                 println("tasklet")
                 RepeatStatus.FINISHED
