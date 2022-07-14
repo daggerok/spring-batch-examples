@@ -10,7 +10,7 @@
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>batch-to-cloud-step-1-plain-old-batch-app</artifactId>
+    <artifactId>batch-to-cloud-step-1-plain-old-batch-reporting-app</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.github.daggerok.batch.parallel</groupId>
