@@ -1,0 +1,65 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: payment
+
+  output:
+    ansi:
+      enabled: always
+
+  transaction:
+    default-timeout: 480m
+
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    open-in-view: false
+    properties:
+      javax.persistence.query.timeout: 28800000 # 8h
+      hibernate:
+        jdbc:
+          batch_size: 3
+        default_batch_fetch_size: 3
+        format_sql: false
+        order_inserts: true
+        generate_statistics: false
+        order_updates: false
+        order_deletes: false
+        cache:
+          use_second_level_cache: off
+          use_query_cache: off
+
+  datasource:
+    url: jdbc:hsqldb:file:./target/${spring.datasource.database}.hsqldb
+    database: ${spring.application.name}-database
+    username: ${spring.application.name}-username
+    password: ${spring.application.name}-password
+    # https://github.com/brettwooldridge/HikariCP/wiki/Spring-Hibernate-with-Annotations
+    hikari:
+      pool-name: caon
+      minimum-idle: 7 # cpus * 2 - 1 => 4 * 2 - 1
+      maximum-pool-size: 13 # throttle * (cpus - 1) + 1 => 4 * (4 - 1) + 1
+      leak-detection-threshold: 240000 # 4 minutes
+      connection-timeout: 50000 # 50 seconds
+      validation-timeout: 60000 # 1 minute
+      keepalive-time: 60000 # 1 minute
+      idle-timeout: 240000 # 4 minutes
+      max-lifetime: 28740000 # 8 hours - 1 minute
+      data-source-properties:
+        useServerPrepStmts: true
+        maintainTimeStats: false
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+
+  liquibase:
+    enabled: true
+    change-log: classpath*:/liquibase/changelog-master-hsqldb.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
