@@ -1,0 +1,44 @@
+name: Read process writer taskets
+on:
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: Type m to triggre manual jobs
+        required: false
+        default: ''
+  #pull_request: [ master ]
+  push:
+jobs:
+  read-process-write-with-tasklets:
+    name: java-${{ matrix.java }} read-process-write-with-tasklets
+    if: github.event.inputs.trigger == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        java: [ 8, 11, 17, 18 ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
+        id: ci
+        with:
+          path: |
+            ~/.npm
+            ~/.node
+            ~/.local
+            ~/.gradle
+            ~/.docker
+            ~/.m2/repository
+            !~/.m2/repository/com/gituhb/daggerok
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle', '**/pom.xml') }}
+      - uses: actions/setup-node@v2
+      - run: cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw -q
+      - run: sudo apt install -y httpie
+      - run: |
+          cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw spring-boot:start
+          http --ignore-stdin post :8080/api/launch-my-job
+      - run: cd $GITHUB_WORKSPACE/read-process-write-with-tasklets ; ./mvnw spring-boot:stop

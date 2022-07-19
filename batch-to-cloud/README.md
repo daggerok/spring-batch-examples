@@ -1,7 +1,7 @@
 # Spring Batch to Cloud
 Status: IN PROGRESS YouTube video: https://www.youtube.com/watch?v=-Icd-s2JoAw&t=1926s
 
-1.[Plain old Spring Batch](#plain-old-batch)
+1. [Plain old Spring Batch](#plain-old-batch)
 
 ## plain old batch
 
